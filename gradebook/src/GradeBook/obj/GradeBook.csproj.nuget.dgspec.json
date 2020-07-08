@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/andrewdavies/NET/C# Fundamentals/gradebook/src/GradeBook/GradeBook.csproj": {}
+    "C:\\Users\\WZFJCV\\Documents\\GitHub\\csharp-fundamentals\\gradebook\\src\\GradeBook\\GradeBook.csproj": {}
   },
   "projects": {
-    "/Users/andrewdavies/NET/C# Fundamentals/gradebook/src/GradeBook/GradeBook.csproj": {
+    "C:\\Users\\WZFJCV\\Documents\\GitHub\\csharp-fundamentals\\gradebook\\src\\GradeBook\\GradeBook.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/andrewdavies/NET/C# Fundamentals/gradebook/src/GradeBook/GradeBook.csproj",
+        "projectUniqueName": "C:\\Users\\WZFJCV\\Documents\\GitHub\\csharp-fundamentals\\gradebook\\src\\GradeBook\\GradeBook.csproj",
         "projectName": "GradeBook",
-        "projectPath": "/Users/andrewdavies/NET/C# Fundamentals/gradebook/src/GradeBook/GradeBook.csproj",
-        "packagesPath": "/Users/andrewdavies/.nuget/packages/",
-        "outputPath": "/Users/andrewdavies/NET/C# Fundamentals/gradebook/src/GradeBook/obj/",
+        "projectPath": "C:\\Users\\WZFJCV\\Documents\\GitHub\\csharp-fundamentals\\gradebook\\src\\GradeBook\\GradeBook.csproj",
+        "packagesPath": "C:\\Users\\WZFJCV\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\WZFJCV\\Documents\\GitHub\\csharp-fundamentals\\gradebook\\src\\GradeBook\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/andrewdavies/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\WZFJCV\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -50,7 +50,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.301/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

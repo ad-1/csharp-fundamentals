@@ -11,13 +11,13 @@ namespace GradeBook
         // MARK: - Properties
 
         private List<float> grades;
-        private string name;
+        public string Name;
 
         // MARK: - Init
 
         public Book(string name, float[] grades)
         {
-            this.name = name;
+            Name = name;
             this.grades = grades.ToList<float>();
         }
 
