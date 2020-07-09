@@ -1,64 +1,21 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace GradeBook
 {
 
-    public class Book
+    public abstract class Book : NamedObject, IBook
     {
-
-        // MARK: - Properties
-
-        private List<float> grades;
-        public string Name;
-
-        // MARK: - Init
-
-        public Book(string name, float[] grades)
+        public Book(string name) : base(name)
         {
-            Name = name;
-            this.grades = grades.ToList<float>();
         }
+        public abstract event GradeAddedDelegate GradeAdded;
+        public abstract Statistics GetStatistics();
+        public abstract void StoreGrade(float grade);
 
-        // MARK: - Handlers
-
-        public void StoreGrades(float[] newGrades)
+        public virtual bool ValidateGrade(float grade)
         {
-            foreach (float grade in newGrades)
-            {
-                Console.WriteLine($"Adding new grade: {grade}");
-            }
-            this.grades.AddRange(newGrades);
-        }
-
-        private float GetHighestGrade()
-        {
-            return grades.Max();
-        }
-
-        public float GetLowestGrade()
-        {
-            return grades.Min();
-        }
-
-        public float GetAverageGrade()
-        {
-            float total = 0;
-            foreach (float grade in grades)
-            {
-                total += grade;
-            }
-            return total / grades.Count;
-        }
-
-        public Statistics GetStatistics()
-        {
-            return new Statistics(
-                high: GetHighestGrade(),
-                low: GetLowestGrade(),
-                average: GetAverageGrade()
-            );
+            return (0 <= grade && grade <= 100) ? true : false;
         }
 
     }

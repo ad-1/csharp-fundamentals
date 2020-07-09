@@ -6,6 +6,31 @@ namespace GradeBook.Tests
     public class TypeTests
     {
 
+        private int counter = 0;
+        public delegate string WriteLogDelegate(string foo);
+
+        [Fact]
+        public void WriteLogDelegateTest()
+        {
+            WriteLogDelegate log = WriteFoo;
+            log += WriteFoo;
+            log += WriteBar;
+            var result = log("foo bar");
+            Assert.Equal(3, counter);
+        }
+
+        private string WriteFoo(string foo)
+        {
+            counter++;
+            return foo;
+        }
+
+        private string WriteBar(string bar)
+        {
+            counter++;
+            return bar;
+        }
+        
         [Fact]
         public void GetBookNameTest()
         {
@@ -25,8 +50,8 @@ namespace GradeBook.Tests
         [Fact]
         public void BookObjectTest()
         {
-            Book book1 = GetBook("book 1");
-            Book book2 = GetBook("book 2");
+            InmemoryBook book1 = GetBook("book 1");
+            InmemoryBook book2 = GetBook("book 2");
             Assert.Equal("book 1", book1.Name);
             Assert.Equal("book 2", book2.Name);
             Assert.NotSame(book1, book2);
@@ -56,18 +81,18 @@ namespace GradeBook.Tests
             return str.ToUpper();
         }
 
-        Book GetBook(string name)
+        InmemoryBook GetBook(string name)
         {
-            return new Book(name, new float[] {});
+            return new InmemoryBook(name);
         }
         
-        public void SetName(ref Book book, string name)
+        public void SetName(ref InmemoryBook book, string name)
         {
             // parameters are always passed by value unless ref keyword is used
             book.Name = name;
         }
         
-        public void GetBookSetName(Book book, string name)
+        public void GetBookSetName(InmemoryBook book, string name)
         {
             book = GetBook(name);
         }
