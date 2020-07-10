@@ -1,7 +1,6 @@
 # C# Fundamentals
 
 ## gradebook
-- project from pluralsite course
 - Introduction to C# and .NET
 - Learning C# Syntax
 - Classes and Objects
@@ -9,3 +8,7 @@
 - Reference and Value Types
 - Control Flow
 - OOP
+
+## Circular Buffer
+- Implementation of circular buffer data structure
+- Introduction to Generics
