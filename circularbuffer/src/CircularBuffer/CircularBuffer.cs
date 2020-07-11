@@ -28,21 +28,12 @@ namespace CircularBuffer
             }
         }
 
-        public CircularBuffer(int capacity)
-        {
-            this .capacity = capacity;
-            this.buffer = new T[capacity];
-            this.head = 0;
-            this.tail = 0;
-            this.count = 0;
-        }
-
         public void ReadFromBuffer()
         {
             if (IsEmpty)
             {
                 Console.WriteLine("Buffer is empty");
-                return ;
+                return;
             }
             Console.WriteLine(buffer[head]);
             Array.Clear(buffer, head, 1);
