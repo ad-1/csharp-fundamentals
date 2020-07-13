@@ -7,6 +7,7 @@ namespace Filesizer
     {
         static void Main(string[] args)
         {
+            // comment
             var searchFileExtension = "*.cs";
             DirectoryInfo d = new DirectoryInfo(@".");
             FileInfo[] files = d.GetFiles(searchFileExtension);
