@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Collections.Generic;
 
-namespace DataStructures
+namespace BufferDataStruct
 {
 
     public class Buffer<T> : IBuffer<T>
     {
 
-        Queue<T> queue = new Queue<T>();
+        protected Queue<T> queue = new Queue<T>();
 
         public Buffer()
         {
@@ -22,12 +23,12 @@ namespace DataStructures
             }
         }
 
-        public virtual void WriteToBuffer(T value)
+        public virtual void Write(T value)
         {
             queue.Enqueue(value);
         }
-        
-        public virtual T ReadFromBuffer()
+
+        public virtual T Read()
         {
             return queue.Dequeue();
         }
@@ -43,6 +44,15 @@ namespace DataStructures
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public void ShowContents()
+        {
+            foreach (var item in this)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine();
         }
 
     }

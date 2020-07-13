@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataStructures
+namespace BufferDataStruct
 {
     class Program
     {
@@ -9,7 +9,7 @@ namespace DataStructures
             Console.Write("Buffer capacity: ");
             var input = Console.ReadLine();
             var capacity = int.Parse(input);
-            CircularBuffer<double> buffer = new CircularBuffer<double>(capacity, true);
+            var buffer = new CircularBuffer<double>(capacity, false);
             ProcessBuffer(capacity, buffer);
         }
 
@@ -31,13 +31,13 @@ namespace DataStructures
                 {
                     ProcessInput(buffer, action);
                 }
-
             }
         }
 
         private static void EnumerateBuffer(IBuffer<double> buffer)
         {
-            foreach (double item in buffer)
+            var items = buffer.AsEnumerableOf<double, int>();
+            foreach (int item in items)
             {
                 Console.WriteLine(item);
             }
@@ -47,7 +47,7 @@ namespace DataStructures
         {
             try
             {
-                buffer.WriteToBuffer(double.Parse(value));
+                buffer.Write(double.Parse(value));
             }
             catch (FormatException ex)
             {
@@ -59,7 +59,7 @@ namespace DataStructures
         {
             if (!buffer.isEmpty)
             {
-                Console.WriteLine(buffer.ReadFromBuffer());
+                Console.WriteLine(buffer.Read());
             }
             else
             {

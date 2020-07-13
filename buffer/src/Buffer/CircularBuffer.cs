@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DataStructures
+namespace BufferDataStruct
 {
 
     public class CircularBuffer<T> : Buffer<T>
@@ -40,7 +40,7 @@ namespace DataStructures
             }
         }
 
-        public override T ReadFromBuffer()
+        public override T Read()
         {
             var item = buffer[head];
             Array.Clear(buffer, head, 1);
@@ -49,16 +49,16 @@ namespace DataStructures
             return item;
         }
 
-        public override void WriteToBuffer(T data)
+        public override void Write(T data)
         {
             if (isFull && !overwrite)
             {
-                Console.WriteLine("Buffer is full");
-                DisplayContents();
+                Console.Write("Buffer is full => ");
+                base.ShowContents();
                 return;
             }
             buffer[tail] = data;
-            DisplayContents();
+            base.ShowContents();
             tail = (tail + 1) % capacity;
             count++;
         }
@@ -71,20 +71,11 @@ namespace DataStructures
             }
         }
 
-        private void DisplayContents()
-        {
-            foreach (var item in buffer)
-            {
-                Console.Write(item + " ");
-            }
-            Console.WriteLine();
-        }
-
         public void Dump()
         {
             while (!isEmpty)
             {
-                ReadFromBuffer();
+                Read();
             }
         }
 

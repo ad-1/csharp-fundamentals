@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 
-namespace DataStructures
+namespace BufferDataStruct
 {
 
     public interface IBuffer<T> : IEnumerable<T>
     {
         bool isEmpty { get; }
-        void WriteToBuffer(T value);
-        T ReadFromBuffer();
-        
+        void Write(T value);
+        T Read();
+        void ShowContents();
+
     }
 
 }
