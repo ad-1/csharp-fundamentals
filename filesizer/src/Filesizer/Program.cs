@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Filesizer
 {
@@ -6,7 +7,13 @@ namespace Filesizer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            DirectoryInfo d = new DirectoryInfo(@".");
+            FileInfo[] files = d.GetFiles("*.cs");
+            Console.WriteLine("Number of files in directory: " + files.Length);
+            foreach (FileInfo file in files)
+            {
+                Console.WriteLine(file.Name);
+            }
         }
     }
 }
