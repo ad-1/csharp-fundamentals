@@ -21,9 +21,12 @@
 ## company
 - Features of a company employee register
 - Adding, sorting, comparing and querying employee departments
+- Creating schedule and assigning employees to meetings
+- Extended IEnumerable with Count() method
+- Practice writing unit tests
 
-###
+### Project Ideas - Pluralsite (Scott Allen)
 
-C# fundamentals => gradebook
-C# generics => buffer, company
-C# LINQ => filesizer, company 
+* fundamentals => gradebook
+* generics => buffer, company
+* LINQ => filesizer, company 
