@@ -25,8 +25,14 @@
 - Extended IEnumerable with Count() method
 - Practice writing unit tests
 
-### Project Ideas - Pluralsite (Scott Allen)
+## csvreader
+- Working with collections (Arrays, Lists, Dictionarys)
+- Using System.IO StreamReader to read csv data
+- Populating collections with data and performing basic query ops
+
+### Project Ideas - Pluralsite (Scott Allen, Simon Robinson)
 
 * fundamentals => gradebook
 * generics => buffer, company
 * LINQ => filesizer, company 
+* collections => csvreader
