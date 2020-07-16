@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 
 namespace Csvreader
 {
@@ -14,7 +13,7 @@ namespace Csvreader
             this.Path = path;
         }
 
-        public Countries GetAllCountries()
+        public Countries GetCountries()
         {
             using var reader = new StreamReader(Path);
             reader.ReadLine();
@@ -28,16 +27,6 @@ namespace Csvreader
             return countries;
         }
 
-        public Country[] GetFirstNCountries(int n)
-        {
-            using var reader = new StreamReader(Path);
-            reader.ReadLine();
-            var nCountries = new Country[n];
-            for (int i = 0; i < n; i++)
-                nCountries[i] = ParseCountryFromCSVData(reader.ReadLine());
-            return nCountries;
-        }
-
         private Country ParseCountryFromCSVData(string line)
         {
             var data = line.Split(',');
@@ -46,7 +35,7 @@ namespace Csvreader
             double population;
             if (dataLength == 5)
             {
-                name = data[0] + " " + data[1];
+                name = data[0] + ", " + data[1];
                 code = data[2];
                 continent = data[3];
                 population = double.TryParse(data[4], out population) ? population : 0;
