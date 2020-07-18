@@ -1,40 +1,65 @@
 ﻿using System;
+using System.Text;
+using System.Net;
+using System.Threading;
 using System.Net.Sockets;
 
-namespace TicTacToe
+namespace Client
 {
+
     public class Client
     {
 
-        public int id;
-        private readonly TcpClient client;
-        private readonly NetworkStream stream;
+        private readonly Socket socket;
 
-
-        public Client(int id, string server, int port)
+        public Client(string ip, int port)
         {
-            this.id = id;
-            client = new TcpClient(server, port);
-            stream = client.GetStream();
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Connect(ip, port);
         }
 
-        public void SendMessage(string message)
+        private void Connect(string ip, int port)
         {
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
-
-            stream.Write(data, 0, data.Length);
-            Console.WriteLine("Sent: {0}", message);
-
-            data = new byte[256];
-            int bytes = stream.Read(data, 0, data.Length);
-            string responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            Console.WriteLine("Received: {0}", responseData);
+            int attemps = 1;
+            while (!socket.Connected && attemps < 10)
+            {
+                try
+                {
+                    socket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
+                }
+                catch (SocketException ex)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Connecting... {attemps} Attempts: {ex.Message}");
+                }
+                Console.Clear();
+                attemps++;
+            }
+            ListenToDataFromServer();
+            SendDataToServer();
         }
 
-        private void CloseConnection()
+        private void SendDataToServer()
         {
-            stream.Close();
-            client.Close();
+            while (true)
+            {
+                string input = Console.ReadLine();
+                byte[] buffer = Encoding.ASCII.GetBytes(input);
+                socket.Send(buffer);
+            }
+        }
+
+        private void ListenToDataFromServer()
+        {
+            while (true)
+            {
+                byte[] receivedBuffer = new byte[1024];
+                int received = socket.Receive(receivedBuffer);
+                byte[] data = new byte[received];
+                Array.Copy(receivedBuffer, data, received);
+                string receivedMsg = Encoding.ASCII.GetString(data);
+                Console.WriteLine(receivedMsg);
+            }
         }
 
     }

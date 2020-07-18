@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Text;
 
-namespace TicTacToe
+namespace Server
 {
     public class Board
     {
         readonly int size;
-        public Square[][] board;
+        private Square[][] board;
 
 
         public Board(int size)
@@ -21,7 +22,7 @@ namespace TicTacToe
                 new Square[size],
                 new Square[size]
             };
-            this.board = b;
+            board = b;
             for (int i = 0; i < board.Length; i++)
             {
                 for (int j = 0; j < board[0].Length; j++)
@@ -31,18 +32,20 @@ namespace TicTacToe
             }
         }
 
-        public void PrintBoard()
+        public string GetBoard()
         {
+            StringBuilder sb = new StringBuilder("");
             Console.WriteLine();
             for (int i = 0; i < board.Length; i++)
             {
                 for (int j = 0; j < board[0].Length; j++)
                 {
-                    Console.Write($"{board[i][j].Value} ");
+                    sb.Append($"{board[i][j].Value} ");
                 }
-                Console.WriteLine();
+                sb.Append($"\n");
             }
-            Console.WriteLine();
+            sb.Append($"\n");
+            return sb.ToString();
         }
 
         public bool SquareTaken(int row, int col, Team owner)
@@ -73,7 +76,6 @@ namespace TicTacToe
 
         public bool CheckWinner(Team player)
         {
-
             int scoreCount;
             for (int i = 0; i < board.Length; i++)
             {
@@ -88,11 +90,7 @@ namespace TicTacToe
                 if (scoreCount == 3)
                     return true;
             }
-
-            // check diag
-
             scoreCount = 0;
-
             for (int i = 0; i < board.Length; i++)
             {
                 if (board[i][size - 1 - i].owner == player)
@@ -102,9 +100,7 @@ namespace TicTacToe
             }
             if (scoreCount == 3)
                 return true;
-
             return false;
-
         }
 
     }

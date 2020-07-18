@@ -1,9 +1,13 @@
-﻿namespace TicTacToe
+﻿namespace Server
 {
     public class Square
     {
 
         public Team owner;
+        public void AssignOwner(Team team)
+        {
+            owner = team;
+        }
 
         public string Value
         {
@@ -21,12 +25,7 @@
 
         public Square()
         {
-            this.owner = Team.Unassigned;
-        }
-
-        public void AssignOwner(Team owner)
-        {
-            this.owner = owner;
+            owner = Team.Unassigned;
         }
 
     }

@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace TicTacToe
+namespace Server
 {
     public class Game
     {
-        readonly Player player1;
-        //readonly Player player2;
-        public Board board;
-        private int turnCount;
 
-        public Game(int boardSize)
+        private int turnCount;
+        private readonly Board board;
+        private readonly Server server;
+
+        public Game(string ip, int port)
         {
-            player1 = new Player(1, Team.Noughts);
-            //player2 = new Player(2, Team.Crosses);
-            board = new Board(boardSize);
+            Console.Title = "Server";
+            server = new Server(ip, port);
+            board = new Board(3);
             turnCount = 0;
             Play();
         }
@@ -21,35 +21,41 @@ namespace TicTacToe
         public void Play()
         {
             Console.WriteLine("Playing new game...");
-            board.PrintBoard();
+            string currentBoard = board.GetBoard();
+            for (int i = 0; i < 3; i++)
+            {
+                server.SendDataToClient(i, currentBoard, currentBoard.Length);
+            }
             while (true)
             {
-                Player player = WhosTurnIsIt();
+                int player = WhosTurnIsIt();
+                Team team = (player == 0) ? Team.Noughts : Team.Crosses;
                 Console.WriteLine($"{player} turn");
                 TakeTurn(player);
-                board.PrintBoard();
-                var winner = board.CheckWinner(player.team);
+                currentBoard = board.GetBoard();
+                server.SendDataToClient(player, currentBoard, currentBoard.Length);
+                var winner = board.CheckWinner(team);
                 if (winner)
                 {
-                    GameOver(Status.Won, player.team);
+                    GameOver(Status.Won, team);
                     break;
                 }
                 var draw = board.CheckDraw();
                 if (draw)
                 {
-                    GameOver(Status.Draw, player.team);
+                    GameOver(Status.Draw, team);
                     break;
                 }
             }
         }
 
-        public void GameOver(Status status, Team winner)
+        public void GameOver(Status status, Team team)
         {
             switch (status)
             {
                 case Status.Won:
                     Console.WriteLine("\n\n==================================");
-                    Console.WriteLine($"{winner} Won The Game!");
+                    Console.WriteLine($"{team} Won The Game!");
                     Console.WriteLine("==================================\n\n");
                     break;
                 case Status.Draw:
@@ -60,12 +66,12 @@ namespace TicTacToe
             }
         }
 
-        public Player WhosTurnIsIt()
+        public int WhosTurnIsIt()
         {
-            return player1; // (turnCount % 2 == 0) ? player1 : player2;
+            return turnCount % 2;
         }
 
-        public void TakeTurn(Player player)
+        public void TakeTurn(int player)
         {
             bool moveOK = false;
             int[] rowCol;
@@ -78,14 +84,16 @@ namespace TicTacToe
                     rowCol = ValidateInput(position);
                     int r = rowCol[0];
                     int c = rowCol[1];
-                    moveOK = board.SquareTaken(r, c, player.team);
+                    Team team = (player == 0) ? Team.Noughts : Team.Crosses;
+                    moveOK = board.SquareTaken(r, c, team);
                     if (!moveOK)
                     {
                         Console.WriteLine($"Square {r},{c} is alrady taken");
                     }
                     else
                     {
-                        player.PlayerMoved(r, c);
+                        string msg = $"{r},{c}";
+                        server.SendDataToClient(player, msg, msg.Length);
                     }
                 }
                 catch (Exception ex)
@@ -103,9 +111,8 @@ namespace TicTacToe
             {
                 throw new FormatException();
             }
-            int row, col;
-            bool rowConverted = int.TryParse(position[0], out row);
-            bool colConverted = int.TryParse(position[1], out col);
+            bool rowConverted = int.TryParse(position[0], out int row);
+            bool colConverted = int.TryParse(position[1], out int col);
             if (!(rowConverted && colConverted))
             {
                 throw new FormatException();
