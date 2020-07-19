@@ -16,6 +16,7 @@ namespace Client
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Connect(ip, port);
+            Listener();
         }
 
         private void Connect(string ip, int port)
@@ -35,24 +36,15 @@ namespace Client
                 Console.Clear();
                 attemps++;
             }
-            ListenToDataFromServer();
-            SendDataToServer();
         }
 
-        private void SendDataToServer()
+        private void Listener()
         {
             while (true)
             {
                 string input = Console.ReadLine();
                 byte[] buffer = Encoding.ASCII.GetBytes(input);
                 socket.Send(buffer);
-            }
-        }
-
-        private void ListenToDataFromServer()
-        {
-            while (true)
-            {
                 byte[] receivedBuffer = new byte[1024];
                 int received = socket.Receive(receivedBuffer);
                 byte[] data = new byte[received];

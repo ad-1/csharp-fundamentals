@@ -40,9 +40,7 @@ namespace Server
             Array.Copy(buffer, receivedDataBuffer, receivedDataLength);
             string receivedMsg = Encoding.ASCII.GetString(receivedDataBuffer);
             Console.WriteLine($"RX: {receivedMsg}");
-            string sendMsg = receivedMsg.ToUpper();
-            Console.WriteLine($"TX: {sendMsg}");
-            SendDataToClient(0, sendMsg, receivedDataLength);
+            SendDataToClient(0, receivedMsg.ToUpper(), receivedDataLength);
         }
 
         public void SendDataToClient(int i, string sendMsg, int sendBufferSize)
