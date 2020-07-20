@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Net;
-using System.Threading;
 using System.Net.Sockets;
 
 namespace Client
@@ -10,48 +9,47 @@ namespace Client
     public class Client
     {
 
-        private readonly Socket socket;
+        private readonly byte[] buffer = new byte[1024];
+        private readonly Socket client;
 
         public Client(string ip, int port)
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Connect(ip, port);
-            Listener();
+            client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse(ip), port);
+            client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), null);
+            Send();
         }
 
-        private void Connect(string ip, int port)
+        private void ConnectCallback(IAsyncResult ar)
         {
-            int attemps = 1;
-            while (!socket.Connected && attemps < 10)
-            {
-                try
-                {
-                    socket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
-                }
-                catch (SocketException ex)
-                {
-                    Console.Clear();
-                    Console.WriteLine($"Connecting... {attemps} Attempts: {ex.Message}");
-                }
-                Console.Clear();
-                attemps++;
-            }
+            client.EndConnect(ar);
+            Console.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
         }
 
-        private void Listener()
+        private void ReceiveCallback(IAsyncResult ar)
+        {
+            int receivedDataLength = client.EndReceive(ar);
+            byte[] receivedDataBuffer = new byte[receivedDataLength];
+            Array.Copy(buffer, receivedDataBuffer, receivedDataLength);
+            string receivedMsg = Encoding.ASCII.GetString(receivedDataBuffer);
+            Console.WriteLine($"Received msg: {receivedMsg}");
+        }
+
+        private void Send()
         {
             while (true)
             {
-                string input = Console.ReadLine();
-                byte[] buffer = Encoding.ASCII.GetBytes(input);
-                socket.Send(buffer);
-                byte[] receivedBuffer = new byte[1024];
-                int received = socket.Receive(receivedBuffer);
-                byte[] data = new byte[received];
-                Array.Copy(receivedBuffer, data, received);
-                string receivedMsg = Encoding.ASCII.GetString(data);
-                Console.WriteLine(receivedMsg);
+                string data = Console.ReadLine();
+                byte[] byteData = Encoding.ASCII.GetBytes(data);
+                client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), null);
+                client.BeginReceive(buffer, 0, buffer.Length, 0, new AsyncCallback(ReceiveCallback), null);
             }
+        }
+
+        private void SendCallback(IAsyncResult ar)
+        {
+            int bytesSent = client.EndSend(ar);
+            Console.WriteLine("Sent {0} bytes to server.", bytesSent);
         }
 
     }
