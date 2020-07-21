@@ -59,6 +59,15 @@ namespace Server
             return false;
         }
 
+        public Status GetStatus(Team team)
+        {
+            if (CheckDraw())
+                return Status.Draw;
+            if (CheckWinner(team))
+                return Status.Won;
+            return Status.Playing;
+        }
+
         public bool CheckDraw()
         {
             for (int i = 0; i < board.Length; i++)
@@ -74,7 +83,7 @@ namespace Server
             return true;
         }
 
-        public bool CheckWinner(Team player)
+        public bool CheckWinner(Team team)
         {
             int scoreCount;
             for (int i = 0; i < board.Length; i++)
@@ -82,7 +91,7 @@ namespace Server
                 scoreCount = 0;
                 for (int j = 0; i < board.Length; i++)
                 {
-                    if (board[i][j].owner == player)
+                    if (board[i][j].owner == team)
                     {
                         scoreCount++;
                     }
@@ -90,16 +99,18 @@ namespace Server
                 if (scoreCount == 3)
                     return true;
             }
+
             scoreCount = 0;
             for (int i = 0; i < board.Length; i++)
             {
-                if (board[i][size - 1 - i].owner == player)
+                if (board[i][size - 1 - i].owner == team)
                 {
                     scoreCount++;
                 }
             }
             if (scoreCount == 3)
                 return true;
+
             return false;
         }
 
